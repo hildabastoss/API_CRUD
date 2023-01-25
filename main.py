@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from routers.app_routers import app_routers
 
-
-
 app = FastAPI(
     title='To Do API', 
     description='This is a To do API for dummies',

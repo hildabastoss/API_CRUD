@@ -2,7 +2,7 @@ from models.main_model import MainModel
 
 class ToDo(MainModel):
     title: str
-    description: str
+    description: str = None
     is_done: bool
 
 

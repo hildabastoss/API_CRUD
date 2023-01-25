@@ -1,10 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
-from db.config import db
+from fastapi import APIRouter
 from models.todo import ToDo
 from typing import List
-from bson import ObjectId
-from bson.errors import InvalidId
-
+from services.todo import find_one_todo, find_todos, create_todo, update_todo, delete_todo
 
 todo_routers = APIRouter()
 
@@ -13,16 +10,20 @@ async def to_do_list():
     """
     List all to do in database
     """
-    docs = db.todos.find()
-    return [ToDo(**doc) async for doc in docs]
-
-@todo_routers.get('/{id}')
+    return await find_todos()
+    
+@todo_routers.get('/{id}', response_model=ToDo)
 async def to_do(id):
-    try:
-        find_filter = {'_id':ObjectId(id)}
-        doc = await db.todos.find_one(find_filter)
-        return ToDo(**doc)
-    except TypeError as e: 
-        raise HTTPException(status_code=404, detail='no document found')
-    except InvalidId as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return await find_one_todo(id=id)
+
+@todo_routers.post('/', status_code=201)
+async def create_to_do(todo: ToDo):
+    return await create_todo(todo=todo)
+
+@todo_routers.put('/{id}')
+async def update_to_do(id, todo: ToDo):
+    return await update_todo(id=id, todo=todo)
+
+@todo_routers.delete('/{id}')
+async def delete_to_do(id):
+    return await delete_todo(id=id)
