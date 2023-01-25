@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field, validator
-from bson import ObjectId
 
 def to_camel_case(value:str):
     words = value.split('_')
@@ -12,8 +11,10 @@ class MainModel(BaseModel):
     id: str = Field(alias='_id', default=None)
     
     @validator('id', pre=True)
-    def oid_converter(cls, value: ObjectId):
-        return str(value)
-        
+    def oid_converter(cls, value):
+        try:
+            return str(value)
+        except TypeError:
+            return value
     class Config:
         alias_generator = to_camel_case
