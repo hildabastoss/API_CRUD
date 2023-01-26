@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
-from models.users import User
+from models.user import User
 from bson import ObjectId
 from services.db import save, find_one, find_many, delete
 from services.hash import generate_pwd_hash

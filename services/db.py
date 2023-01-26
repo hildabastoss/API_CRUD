@@ -1,6 +1,8 @@
 from fastapi import HTTPException
 from bson import ObjectId
 from bson.errors import InvalidId
+from models.user import User
+from models.todo import ToDo
 
 
 async def save(obj):
@@ -31,3 +33,9 @@ async def delete(id, Model):
         await Model.collection().delete_one(find_filter)
     except Exception as e: 
         pass
+    
+async def find_todos(user: User):
+    print(user)
+    docs = ToDo.collection().find({'userId':ObjectId(user.id)})
+    # print(docs.count())
+    return [ToDo(**doc) async for doc in docs]

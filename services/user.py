@@ -1,5 +1,5 @@
 from services.hash import pwd_context, generate_hash, get_data_from_hash
-from models.users import User
+from models.user import User
 from fastapi import HTTPException, Depends
 
 
