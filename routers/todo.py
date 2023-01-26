@@ -1,8 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from models.todo import ToDo
 from typing import List
 from bson import ObjectId
 from services.db import save, find_one, find_many, delete
+from services.user import get_current_user
+from models.users import User
 
 todo_routers = APIRouter()
 
@@ -18,7 +20,7 @@ async def to_do(id):
     return await find_one(id=id, Model=ToDo)
 
 @todo_routers.post('/', status_code=201)
-async def create_to_do(todo: ToDo):
+async def create_to_do(todo: ToDo, user: User = Depends(get_current_user)):
     await save(todo)
 
 @todo_routers.put('/{id}')
