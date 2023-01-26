@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, validator
 
+
 def to_camel_case(value:str):
     words = value.split('_')
     result = words[0]
@@ -16,5 +17,6 @@ class MainModel(BaseModel):
             return str(value)
         except TypeError:
             return value
+
     class Config:
         alias_generator = to_camel_case
