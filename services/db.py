@@ -3,6 +3,7 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from models.user import User
 from models.todo import ToDo
+from models.main_model import ObjId
 
 
 async def save(obj):
@@ -35,7 +36,7 @@ async def delete(id, Model):
         pass
     
 async def find_todos(user: User):
-    print(user)
-    docs = ToDo.collection().find({'userId':ObjectId(user.id)})
-    # print(docs.count())
+    docs = ToDo.collection().find({'userId':user.id})
+    print(type(docs))
     return [ToDo(**doc) async for doc in docs]
+

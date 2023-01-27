@@ -31,3 +31,6 @@ class MainModel(BaseModel):
 
     class Config:
         alias_generator = to_camel_case
+        json_encoders = {ObjectId:str}
+
+
